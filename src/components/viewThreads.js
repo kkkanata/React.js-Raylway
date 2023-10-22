@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ViewThreads = () => {
+const ViewThreads = ({ setThreadsId }) => {
   const [threads, setThreads] = useState([]);
+  const navigate = useNavigate(); // navigate 関数を取得
+
+  const threadClick = (threadId) => {
+    setThreadsId(threadId);
+    navigate(`/thread/${threadId}`); // navigate を使用してリンク
+  }
 
   const fetchThreads = async () => {
     try {
@@ -26,7 +33,9 @@ const ViewThreads = () => {
       <h1>Thread List</h1>
       <ul>
         {threads.map((thread) => (
-          <li className='App-link' key={thread.id}>{thread.title}</li>
+          <li className='App-link' key={thread.id}>
+            <button onClick={() => threadClick(thread.id)}>{thread.title}</button>
+          </li>
         ))}
       </ul>
     </div>
