@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ViewThreads = ({ setThreadsId }) => {
+const ViewThreads = ({ setThreadsIdandTitle }) => {
   const [threads, setThreads] = useState([]);
   const navigate = useNavigate(); // navigate 関数を取得
 
-  const threadClick = (threadId) => {
-    setThreadsId(threadId);
+  const threadClick = (threadId, threadTitle) => {
+    setThreadsIdandTitle(threadTitle);
     navigate(`/thread/${threadId}`); // navigate を使用してリンク
   }
 
@@ -17,6 +17,7 @@ const ViewThreads = ({ setThreadsId }) => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
+      console.log(data);
       return data;
     } catch (error) {
       console.error('Fetch error:', error);
@@ -30,11 +31,11 @@ const ViewThreads = ({ setThreadsId }) => {
 
   return (
     <div>
-      <h1>Thread List</h1>
+      <h1>新着スレッド</h1>
       <ul>
         {threads.map((thread) => (
           <li className='App-link' key={thread.id}>
-            <button onClick={() => threadClick(thread.id)}>{thread.title}</button>
+            <button onClick={() => threadClick(thread.id, thread.title)}>{thread.title}</button>
           </li>
         ))}
       </ul>

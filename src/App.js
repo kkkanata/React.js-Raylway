@@ -10,13 +10,14 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      threadId: null, // 初期値はnull
+      threadTitle: null,
     };
   }
 
     // コールバック関数
-    setThreadsId = (threadId) => {
-      this.setState({ threadId });
+    setThreadsIdandTitle = (threadTitle) => {
+      console.log(this.state);
+      this.setState({ threadTitle });
     }
 
   render(){
@@ -26,9 +27,9 @@ class App extends React.Component {
           <h1 className='inline-tag'>掲示板</h1>
           <GoToCreateThreadButton className='inline-tag' />
           <Routes>
-            <Route path="/" element={<ViewThreads setThreadsId={this.setThreadsId} />} />
+            <Route path="/" element={<ViewThreads setThreadsIdandTitle={this.setThreadsIdandTitle} />} />
             <Route path="/thread/new" element={<CreateThread />} />
-            <Route path="/thread/:threadId" element={<ListOfPostsWithinTheThread threadId={this.state.threadId}/> } />
+            <Route path="/thread/:threadId" element={<ListOfPostsWithinTheThread threadTitle={this.state.threadTitle}/> } />
           </Routes>
         </div>
       </Router>
