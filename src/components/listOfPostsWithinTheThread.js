@@ -1,16 +1,46 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import CreatePostButton from './createPostButton';
+import axios from 'axios';
 
 const ListOfPostsWithinTheThread = ({ threadTitle }) => {
   let { threadId } = useParams();
   const [postResponse, setPosts] = useState([]);
   const [error, setError] = useState();
 
+  const [postContent, setPostContent] = useState(''); //button処理
+  const handlePostContentChange = (e) => {
+    setPostContent(e.target.value);
+    };
+
+    const handleSubmit = async () => {
+      try {
+        // スレッドを作成するためのデータを準備
+        const postData = {
+          post: postContent,
+        };
+  
+        // SwaggerHub APIにPOSTリクエストを送信
+        const response = await axios.post(
+          `https://railway.bulletinboard.techtrain.dev/threads/${threadId}/posts`,postData
+        );
+
+              // リクエストが成功した場合の処理
+        console.log('新しい投稿を作成:', response.data);
+
+       // 新しい投稿が作成された後、最新の投稿を再取得
+        const data = await fetchPosts();
+        setPosts(data);
+    } catch (error) {
+      // リクエストが失敗した場合の処理
+      console.error('エラー:', error);
+    }
+  }; 
+  //ここまでbutton処理
+
 
   const fetchPosts = useCallback(async () => {
     try {
-      const response = await fetch(`https://2y6i6tqn41.execute-api.ap-northeast-1.amazonaws.com/threads/${threadId}/posts`);
+      const response = await fetch(`https://railway.bulletinboard.techtrain.dev/threads/${threadId}/posts`);
       if (!response.ok) {
         // サーバーサイドからのエラーレスポンスをJSONとして取得
         const errorResponse = await response.json();
@@ -29,7 +59,7 @@ const ListOfPostsWithinTheThread = ({ threadTitle }) => {
       }
   
       const data = await response.json();
-      console.log(data);
+      console.log(data); //テスト
       setError(null); // エラーが解消された場合、エラーステートをクリア
       return data;
     } catch (error) {
@@ -40,7 +70,8 @@ const ListOfPostsWithinTheThread = ({ threadTitle }) => {
   }, [threadId]);
   
   // スレッド内の投稿を取得するための処理
-  useEffect(() => {
+  useEffect(() => { //useEffectについて理解が進んでいない
+    console.log("レンダリング");
     const fetchData = async () => {
       const data = await fetchPosts();
       setPosts(data);
@@ -63,7 +94,11 @@ const ListOfPostsWithinTheThread = ({ threadTitle }) => {
         <p>投稿がありません</p>
       )}
       <div>
-        <CreatePostButton threadId={threadId} />
+      <div>
+        <label htmlFor="postcontents">内容:</label>
+        <input type="text" id="postcontents" value={postContent} onChange={handlePostContentChange} />
+      </div>
+      <button onClick={handleSubmit}>投稿する</button>
       </div>
     </div>
   );}

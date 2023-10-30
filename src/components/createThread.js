@@ -17,7 +17,7 @@ const CreateThread = () => {
 
       // SwaggerHub APIにPOSTリクエストを送信
       const response = await axios.post(
-        'https://2y6i6tqn41.execute-api.ap-northeast-1.amazonaws.com/threads',
+        'https://railway.bulletinboard.techtrain.dev/threads',
         postData
       );
 

@@ -12,7 +12,7 @@ const ViewThreads = ({ setThreadsIdandTitle }) => {
 
   const fetchThreads = async () => {
     try {
-      const response = await fetch('https://2y6i6tqn41.execute-api.ap-northeast-1.amazonaws.com/threads');
+      const response = await fetch('https://railway.bulletinboard.techtrain.dev/threads');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
