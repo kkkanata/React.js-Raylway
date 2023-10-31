@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import './components.css';
 
 const ListOfPostsWithinTheThread = ({ threadTitle }) => {
   let { threadId } = useParams();
