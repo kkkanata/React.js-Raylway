@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './components.css';
@@ -39,7 +39,7 @@ const ListOfPostsWithinTheThread = ({ threadTitle }) => {
   //ここまでbutton処理
 
 
-  const fetchPosts = useCallback(async () => {
+  const fetchPosts = async () => {
     try {
       const response = await fetch(`https://railway.bulletinboard.techtrain.dev/threads/${threadId}/posts`);
       if (!response.ok) {
@@ -68,17 +68,17 @@ const ListOfPostsWithinTheThread = ({ threadTitle }) => {
       setError('Network error');
       return [];
     }
-  }, [threadId]);
+  }
   
   // スレッド内の投稿を取得するための処理
-  useEffect(() => { //useEffectについて理解が進んでいない
+  useEffect(() => {
     console.log("レンダリング");
     const fetchData = async () => {
       const data = await fetchPosts();
       setPosts(data);
     };
     fetchData(); // fetchPosts 関数を含む fetchData を呼び出す
-  }, [threadId, fetchPosts]); // threadId と fetchPosts を依存関係のリストに追加
+  }, []);
 
   return (
     <div>
